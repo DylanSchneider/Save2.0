@@ -1,4 +1,4 @@
-game_id,pit_id,inn_ct,bat_home_id,outs_ct,away_score_ct,home_score_ct,onFirst,onSecond,onThird,save_pit_id
+GAME_ID,PIT_ID,INN_CT,BAT_HOME_ID,OUTS_CT,AWAY_SCORE_CT,HOME_SCORE_CT,onFirst,onSecond,onThird,SAVE_PIT_ID
 ANA201004050,jepsk001,7,0,0,3,4,0,0,0,fuenb001
 ANA201004050,rodnf001,8,0,0,3,4,0,0,0,fuenb001
 ANA201004050,fuenb001,9,0,0,3,6,0,0,0,fuenb001
