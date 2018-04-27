@@ -36,7 +36,7 @@ inner join (
 left join games g on g.GAME_ID = e.GAME_ID
 order by e.game_id, e.BAT_HOME_ID,e.event_id; 
 
-SELECT game_id, pit_id, inn_ct, bat_home_id, outs_ct, away_score_ct, home_score_ct, IF(BASE1_RUN_ID = '', 0, 1) AS onFirst, IF(BASE2_RUN_ID = '', 0, 1) AS onSecond, IF(BASE3_RUN_ID = '', 0, 1) AS onThird, save_pit_id
+SELECT GAME_ID, PIT_ID, INN_CT, BAT_HOME_ID, OUTS_CT, AWAY_SCORE_CT, HOME_SCORE_CT, IF(BASE1_RUN_ID = '', 0, 1) AS onFirst, IF(BASE2_RUN_ID = '', 0, 1) AS onSecond, IF(BASE3_RUN_ID = '', 0, 1) AS onThird, SAVE_PIT_ID
 FROM pitching_data;
 
 
