@@ -27,9 +27,19 @@ left join games g on g.GAME_ID = e.GAME_ID;
 select s.* from subs s where sub_fld_cd = 1 and removed_fld_cd = 1 order by s.GAME_ID, s.BAT_HOME_ID;
 
 # get initial state for each last pitcher for each game, including the saver (if applicable)
+DROP TABLE IF EXISTS pitching_data;
+CREATE TEMPORARY TABLE pitching_data AS 
 select e.*, g.save_pit_id from events e
 inner join (
 	select s.* from subs s where sub_fld_cd = 1 and removed_fld_cd = 1 order by s.GAME_ID, s.BAT_HOME_ID
 ) s on s.game_id = e.game_id and s.event_id+1 = e.event_id
 left join games g on g.GAME_ID = e.GAME_ID
 order by e.game_id, e.BAT_HOME_ID,e.event_id; 
+
+SELECT game_id, pit_id, inn_ct, bat_home_id, outs_ct, away_score_ct, home_score_ct, IF(BASE1_RUN_ID = '', 0, 1) AS onFirst, IF(BASE2_RUN_ID = '', 0, 1) AS onSecond, IF(BASE3_RUN_ID = '', 0, 1) AS onThird, save_pit_id
+FROM pitching_data;
+
+
+
+
+
