@@ -1,7 +1,7 @@
 use retrosheet;
 
 # get the initial  state of the saving pitcher for each game
-SELECT e.game_ID as 'gID', ABS(g.AWAY_SCORE_CT - g.HOME_SCORE_CT) AS 'scoreDiff', e.INN_CT AS 'inning', e.OUTS_CT as 'Current Outs', e.BASE1_RUN_ID as 'onFirst', e.BASE2_RUN_ID as 'onSecond', e.BASE3_RUN_ID as 'onThird', e.pit_id as 'pID', concat(r.first_name_tx, ' ' , r.last_name_tx) as 'name'
+SELECT e.game_ID as 'gID', ABS(g.AWAY_SCORE_CT - g.HOME_SCORE_CT) AS 'scoreDiff', e.INN_CT AS 'inning', e.OUTS_CT as 'Current Outs', IF(e.BASE1_RUN_ID = '', 0,1)  as 'onFirst', IF(e.BASE2_RUN_ID = '', 0,1)  as 'onSecond', IF(e.BASE2_RUN_ID = '', 0,1)  as 'onThird', e.pit_id as 'pID', concat(r.first_name_tx, ' ' , r.last_name_tx) as 'name'
 FROM games g
 left JOIN events e ON e.pit_id = g.save_pit_id AND e.game_ID = g.game_ID
 left join rosters r on r.player_ID = g.save_pit_id;
