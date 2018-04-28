@@ -29,14 +29,15 @@ select s.* from subs s where sub_fld_cd = 1 and removed_fld_cd = 1 order by s.GA
 # get initial state for each last pitcher for each game, including the saver (if applicable)
 DROP TABLE IF EXISTS pitching_data;
 CREATE TEMPORARY TABLE pitching_data AS 
-select e.*, g.save_pit_id from events e
+select e.*, g.save_pit_id, concat(r.first_name_tx, ' ', r.last_name_tx) as 'FULL_NAME' from events e
 inner join (
 	select s.* from subs s where sub_fld_cd = 1 and removed_fld_cd = 1 order by s.GAME_ID, s.BAT_HOME_ID
 ) s on s.game_id = e.game_id and s.event_id+1 = e.event_id
 left join games g on g.GAME_ID = e.GAME_ID
+left join rosters r on r.player_id = e.pit_id
 order by e.game_id, e.BAT_HOME_ID,e.event_id; 
 
-SELECT GAME_ID, PIT_ID, INN_CT, IF(BAT_HOME_ID = 0, 1, 0) as HOME_TEAM, OUTS_CT, AWAY_SCORE_CT, HOME_SCORE_CT, IF(BASE1_RUN_ID = '', 0, 1) AS onFirst, IF(BASE2_RUN_ID = '', 0, 1) AS onSecond, IF(BASE3_RUN_ID = '', 0, 1) AS onThird, IF(SAVE_PIT_ID = '', 'None', SAVE_PIT_ID) AS SAVE_PIT_ID
+SELECT GAME_ID, PIT_ID, INN_CT, IF(BAT_HOME_ID = 0, 1, 0) as HOME_TEAM, OUTS_CT, AWAY_SCORE_CT, HOME_SCORE_CT, IF(BASE1_RUN_ID = '', 0, 1) AS onFirst, IF(BASE2_RUN_ID = '', 0, 1) AS onSecond, IF(BASE3_RUN_ID = '', 0, 1) AS onThird, IF(SAVE_PIT_ID = '', 'None', SAVE_PIT_ID) AS SAVE_PIT_ID, FULL_NAME
 FROM pitching_data;
 
 
