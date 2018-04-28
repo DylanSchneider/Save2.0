@@ -26,24 +26,15 @@ left join games g on g.GAME_ID = e.GAME_ID;
 
 select s.* from subs s where sub_fld_cd = 1 and removed_fld_cd = 1 order by s.GAME_ID, s.BAT_HOME_ID;
 
-# get initial state for each last pitcher for each game, including the saver (if applicable)
-DROP TABLE IF EXISTS pitching_data;
-CREATE TEMPORARY TABLE pitching_data AS 
-select e.*, g.save_pit_id, concat(r.first_name_tx, ' ', r.last_name_tx) as 'FULL_NAME' from events e
+# put it all together
+select e.GAME_ID, e.EVENT_ID, e.INN_CT, g.INN_CT as TOTAL_INN, IF(e.BAT_HOME_ID = 0, 1, 0) as HOME_TEAM, e.OUTS_CT, e.HOME_SCORE_CT, e.AWAY_SCORE_CT, IF(BASE1_RUN_ID = '', 0, 1) AS RUNNER_FIRST, IF(BASE2_RUN_ID = '', 0, 1) AS RUNNER_SECOND, IF(BASE3_RUN_ID = '', 0, 1) AS RUNNER_THIRD, e.PIT_ID, IF(SAVE_PIT_ID = '', 'None', SAVE_PIT_ID) AS SAVE_PIT_ID, concat(r.first_name_tx, ' ', r.last_name_tx) as 'FULL_NAME' 
+from events e
 inner join (
-	select s.* from subs s where sub_fld_cd = 1 and removed_fld_cd = 1 order by s.GAME_ID, s.BAT_HOME_ID
+	select s.GAME_ID, s.BAT_HOME_ID, s.EVENT_ID from subs s where sub_fld_cd = 1 and removed_fld_cd = 1 order by s.GAME_ID, s.BAT_HOME_ID
 ) s on s.game_id = e.game_id and s.event_id+1 = e.event_id
-left join games g on g.GAME_ID = e.GAME_ID
-left join rosters r on r.player_id = e.pit_id
+left join (
+	select r.player_id, r.first_name_tx, r.LAST_NAME_TX from rosters r group by r.player_id, r.FIRST_NAME_TX, r.LAST_NAME_TX
+) r on r.player_id = e.pit_id
+left join games g on g.GAME_ID = e.GAME_ID and g.GAME_ID = s.GAME_ID
 order by e.game_id, e.BAT_HOME_ID,e.event_id; 
-
-SELECT GAME_ID, PIT_ID, INN_CT, IF(BAT_HOME_ID = 0, 1, 0) as HOME_TEAM, OUTS_CT, AWAY_SCORE_CT, HOME_SCORE_CT, IF(BASE1_RUN_ID = '', 0, 1) AS onFirst, IF(BASE2_RUN_ID = '', 0, 1) AS onSecond, IF(BASE3_RUN_ID = '', 0, 1) AS onThird, IF(SAVE_PIT_ID = '', 'None', SAVE_PIT_ID) AS SAVE_PIT_ID, FULL_NAME
-FROM pitching_data;
-
-
-
-
-
-
-
 
