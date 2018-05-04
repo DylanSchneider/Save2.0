@@ -15,16 +15,23 @@ var yScale = d3.scale.linear()
 var xScale = d3.scale.ordinal()
     .rangeRoundBands([0, width - margin.right - margin.left], .1);
 
-d3.csv("cereal.csv", function(error, data){
+d3.csv("pitchers.csv", function(error, data){
 	data = data.map(function(d){ 
     		return d;
 	});
 	//yscale's domain is from zero to the maximum "Median Price" in your data
-	yScale.domain([0, d3.max(data, function(d){ return d["SaveRating"]; })]);
+	yScale.domain([0, d3.max(data, function(d){ return d["save2.0"]; })]);
 
 	//xscale is unique values in your data (Age Group, since they are all different)
-	xScale.domain(data.map(function(d){ return d["Pitcher_ID"]; }));
-		
+	xScale.domain(data.map(function(d){ return d["Name"]; }));
+
+	var xAxis = d3.svg.axis()
+    	.scale(xScale)
+    	.orient("bottom");
+
+	var yAxis = d3.svg.axis()
+    	.scale(yScale)
+    	.orient("left");	
 
 	svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
@@ -33,9 +40,9 @@ d3.csv("cereal.csv", function(error, data){
         .enter()
         .append("rect")
         .attr("class", "bar")
-        .attr("x", function(d){ return xScale(d["Pitcher_ID"]); })
-        .attr("y", function(d){ return yScale(d["SaveRating"]); })
-        .attr("height", function(d){ return height - margin.top - margin.bottom - yScale(d["SaveRating"]); })
+        .attr("x", function(d){ return xScale(d["Name"]); })
+        .attr("y", function(d){ return yScale(d["save2.0"]); })
+        .attr("height", function(d){ return height - margin.top - margin.bottom - yScale(d["save2.0"]); })
         .attr("width", function(d){ return xScale.rangeBand(); });
 
 	 //adding y axis to the left of the chart
