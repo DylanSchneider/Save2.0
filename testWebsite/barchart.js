@@ -1,70 +1,134 @@
-var margin = {top:0, right:0, bottom:20, left:50},
-    width  = 600,
-    height = 300;
+var margin = {
+        top: 10,
+        right: 10,
+        bottom: 20,
+        left: 30
+    },
+    width = 920 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
-var svg = d3.select("body")
-    .append("svg")
-    .attr("width", "100%")
-    .attr("height", "100%")
-    .attr("viewBox", "0 0 " + width + " " + height);
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], 0.5);
 
 
-var yScale = d3.scale.linear()
-    .range([height - margin.top - margin.bottom, 0]);
+var xAxisScale = d3.scale.linear()
+    //.domain([2010, 2014])
+    .range([ 0, width]);
 
-var xScale = d3.scale.ordinal()
-    .rangeRoundBands([0, width - margin.right - margin.left], .1);
+var xAxis = d3.svg.axis()
+    .scale(xAxisScale)
+    .orient("bottom")
+    .tickFormat(d3.format("d"));
 
-d3.csv("pitchers.csv", function(error, data){
-	//var d = data.filter(function(d){ 
-    	//	if (d.Name == 'Aaron Crow') {
-	//		return d
-	//	};
-	//});
-	//yscale's domain is from zero to the maximum "Median Price" in your data
-	yScale.domain([0, d3.max(data, function(d){ return d["SaveRating"]; })]);
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
 
-	//xscale is unique values in your data (Age Group, since they are all different)
-	xScale.domain(data.map(function(d){ return d["year"]; }));
-		
-         var xAxis = d3.svg.axis()
-            .scale(xScale)
-            .orient("bottom");
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        var yAxis = d3.svg.axis()
-            .scale(yScale)
-            .orient("left");
-
-	svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .selectAll(".bar")
-	        .data(data)
-              .enter().append("rect")
-	      .filter(function(d){ 
-		if(d["Pitcher_ID"] == "Aaron Crow") {
-			return xScale(d["year"]);
+d3.csv("pitchers.csv", function(error, data) {
+	var filteredData = data.filter(function(d) {
+		if (d.Pitcher_ID == 'Aaron Crow'){
+			return d;
 		}
-	       })
-        .attr("class", "bar")
-	.attr("x", function(d) {return xScale(d["year"])})
+	});
+	xAxisScale.domain(d3.extent(filteredData, function(d) { 
+		return d.year+1; 
+	}));
+    x.domain(filteredData.map(function(d) {
+        return d.year;
+    }));
+    y.domain(d3.extent(filteredData, function(d) {
+        return d.SaveRating;
+    })).nice();
 
-        .attr("y", function(d){ return yScale(d["SaveRating"]); })
-        .attr("height", function(d){ return height - margin.top - margin.bottom - yScale(d["SaveRating"]); })
-        .attr("width", function(d){ return xScale.rangeBand(); });
+	console.log(filteredData);
+    svg.selectAll(".bar")
+        .data(filteredData)
+        .enter().append("rect")
+        .attr("class", function(d) {
 
-	 //adding y axis to the left of the chart
-	 svg.append("g")
-    	 .attr("class", "y axis")
-    	 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-    	 .call(yAxis);
+            if (d.SaveRating < 0){
+                return "bar negative";
+            } else {
+                return "bar positive";
+            }
 
-	 //adding x axis to the bottom of chart
-	 svg.append("g")
-    	 .attr("class", "x axis")
-    	 .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
-    	 .call(xAxis);
-	
-	
+        })
+        .attr("data-yr", function(d){
+            return d.year;
+        })
+        .attr("data-c", function(d){
+            return d.SaveRating;
+        })
+        .attr("title", function(d){
+            return d.Pitcher_ID;
+        })
+        .attr("y", function(d) {
+
+            if (d.SaveRating > 0){
+                return y(d.SaveRating);
+            } else {
+                return y(0);
+            }
+
+        })
+        .attr("x", function(d) {
+            return x(d.year);
+        })
+        .attr("width", x.rangeBand())
+        .attr("height", function(d) {
+            return Math.abs(y(d.SaveRating) - y(0));
+        })
+        .on("mouseover", function(d){
+            // alert("Year: " + d.Year + ": " + d.Celsius + " Celsius");
+            d3.select("#_yr")
+                .text("Year: " + d.year);
+            d3.select("#degrree")
+                .text(d.SaveRating);
+        });
+	console.log('1');
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .append("text")
+        .text("SR")
+        .attr("transform", "translate(15, 40), rotate(-90)")
+
+    svg.append("g")
+        .attr("class", "X axis")
+        .attr("transform", "translate(" + (margin.left - 6.5) + "," + height + ")")
+        .call(xAxis);
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .append("line")
+        .attr("y1", y(0))
+        .attr("y2", y(0))
+        .attr("x2", width);
+
+    svg.append("g")
+        .attr("class", "infowin")
+        .attr("transform", "translate(50, 5)")
+        .append("text")
+        .attr("id", "_yr");
+
+    svg.append("g")
+        .attr("class", "infowin")
+        .attr("transform", "translate(110, 5)")
+        .append("text")
+        .attr("id","degrree");
+
+	console.log('2');
 });
-
-
+console.log('2');
