@@ -20,19 +20,19 @@
   p {font-size: 16px;}
   .margin {
     margin-bottom: 45px;
-    color: black;
+    color: white;
   }
   .bg-1 { 
       background-color: darkred; /* Green */
       color: #ffffff;
   }
   .bg-2 { 
-      background-color: white /* Dark Blue */
+      background-color: darkblue /* Dark Blue */
       color: black;
   }
   .bg-3 { 
-      background-color: #ffffff; /* White */
-      color: #555555;
+      background-color: darkblue; /* White */
+      color: white;
   }
   .bg-4 { 
       background-color: white; /* Black Gray */
@@ -54,6 +54,17 @@
   .navbar-nav  li a:hover {
       color: #1abc9c !important;
   }
+  .i-am-centered { 
+    margin: 0 auto; max-width: 1000px;
+  }
+
+  ol {
+    margin: 0 auto;
+    size: 4;
+    color: white;
+  }
+
+
   </style>
 </head>
 <body>
@@ -79,17 +90,28 @@
 </nav>
 
 <!-- First Container -->
-<div class="container-fluid bg-1 text-center">
+<div class="container-fluid bg-1">
+  <div class="text-center">
   <h3 class="margin">About Save 2.0</h3>
   <img src="MLB.png" style="display:inline" alt="MLB" width="350" height="200">
-  <p style="color:white;">About our Save 2.0 stat.</p>
-  <h3>Save 2.0</h3>
+  <h1><font size = "4.5" color="white">A pitcher is credited with a save if he enters the game with his team leading and meets all four of the following conditions:</font></h1>
+  </div>
+  <ol>
+  <li>He is the finishing pitcher in a game won by his team</li>
+  <li>He is not the winning pitcher</li>
+  <li>He is credited with at least ⅓ of an inning pitched; and</li>
+  <li>He satisfies one of the following conditions:</li>
+  <ol>
+      <li>He enters the game with a lead of no more than three runs and pitches for at least one inning</li>
+      <li>He enters the game, regardless of the count, with the potential tying run either on base, at bat or on deck</li>
+      <li>He pitches for at least three innings</li>
+    </ol>
+</ol>
 </div>
 
 <!-- Second Container -->
 <div class="container-fluid bg-2 text-center">
-  <h3 class="margin">Try it out and search for a relief pitcher!</h3>
-  <p style="color:black;">Try it out section.</p>
+  <h3 style="color:black;">Try it out and search for a relief pitcher!</h3>
   <!--<a href="#" class="btn btn-default btn-lg">
     <span class="glyphicon glyphicon-search"></span> Search
   </a> -->
@@ -104,16 +126,20 @@
                 <div class="form-group has-feedback">
                 <label for="search" class="sr-only">Search For A Player...</label>
                 <input type="text" style = "position: relative; left:100px" class="form-control" id="userInput" placeholder="Search For A Player...">
-                <input type="submit" style = "position: relative; left:100px" onclick="othername();">
+                <input class="btn btn-primary" type="submit" style = "position: absolute; left:460px; top: -5px; color:black;" onclick="othername(); redirect();" >
                   <!--<span class="glyphicon glyphicon-search form-control-feedback" style = "position: relative; left:430px"></span>-->
               </div>
             </form>
             <script type="text/javascript">
               function othername() {
-              var input = document.getElementById("userInput").value;
-              alert(input);
-              localStorage.setItem("PlayerName", input);
-            }
+                var input = document.getElementById("userInput").value;
+                localStorage.setItem("PlayerName", input);
+              }
+
+              function redirect() {
+                location.href = "barchart.html";
+              }
+
             </script>
         </div>
     </div>
@@ -124,23 +150,21 @@
 
 
 <!-- Third Container (Grid) -->
-<div class="container-fluid bg-3 text-center">    
-  <h3 class="margin">Where To Find Me?</h3><br>
-  <div class="row">
-    <div class="col-sm-4">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      <img src="birds1.jpg" class="img-responsive margin" style="width:100%" alt="Image">
+    <div class="container-fluid bg-3 text-center">    
+    <h3 class="margin">About Save 2.0's Creators</h3><br>
+    <div class="i-am-centered">
+    <div class="row">
+      <div class="col-sm-4">
+        <p>Spencer Negri</p>
+        <img src="birds1.jpg" class="img-responsive margin" style="width:100%" alt="Image">
+      </div>
+      <div class="col-sm-4"> 
+        <p>Dylan Schneider</p>
+        <img src="birds2.jpg" class="img-responsive margin" style="width:100%" alt="Image">
+      </div>
     </div>
-    <div class="col-sm-4"> 
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      <img src="birds2.jpg" class="img-responsive margin" style="width:100%" alt="Image">
-    </div>
-    <div class="col-sm-4"> 
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      <img src="birds3.jpg" class="img-responsive margin" style="width:100%" alt="Image">
     </div>
   </div>
-</div>
 
 
 </body>
