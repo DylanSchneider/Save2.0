@@ -8,15 +8,15 @@ var margin = {
     height = 400 - margin.top - margin.bottom;
 
 var y = d3.scale.linear()
-    .range([height, 0]);
+    .range([height-30, 0]);
 
 var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], 0.5);
+    .rangeRoundBands([0, width], 0.6, 0.3);
 
 
 var xAxisScale = d3.scale.linear()
     //.domain([2010, 2014])
-    .range([ 0, width]);
+    .range([0, width]);
 
 var xAxis = d3.svg.axis()
     .scale(xAxisScale)
@@ -35,13 +35,58 @@ var svg = d3.select("#chart").append("svg")
 
 d3.csv("pitchers.csv", function(error, data) {
 	var filteredData = data.filter(function(d) {
-		if (d.Pitcher_ID == 'Aaron Crow'){
+		if (d.Pitcher_ID == 'Vinnie Pestano'){
 			return d;
 		}
 	});
-	xAxisScale.domain(d3.extent(filteredData, function(d) { 
-		return d.year+1; 
-	}));
+	
+	let yearArr = filteredData.map(function(d) { return d.year; });
+	console.log(yearArr);
+	if (yearArr.indexOf("2010") < 0){
+		var new_json = {};
+		new_json.Pitcher_ID = filteredData[0].Pitcher_ID;
+		new_json.year = "2010";
+		new_json.SaveRating = "0";
+		new_json.made = "0";
+		new_json.blown = "0";
+		new_json.attempts = "0";
+		filteredData.push(new_json);
+	}
+	if (yearArr.indexOf("2011") < 0){
+        var new_json = {};
+        new_json.Pitcher_ID = filteredData[0].Pitcher_ID;
+        new_json.year = "2011";
+        new_json.SaveRating = "0";
+        new_json.made = "0";
+        new_json.blown = "0";
+        new_json.attempts = "0";
+		filteredData.push(new_json);
+    }
+	if (yearArr.indexOf("2012") < 0){
+        var new_json = {};
+        new_json.Pitcher_ID = filteredData[0].Pitcher_ID;
+        new_json.year = "2012";
+        new_json.SaveRating = "0";
+        new_json.made = "0";
+        new_json.blown = "0";
+        new_json.attempts = "0";
+		filteredData.push(new_json);
+    }
+	if (yearArr.indexOf("2013") < 0){
+        var new_json = {};
+        new_json.Pitcher_ID = filteredData[0].Pitcher_ID;
+        new_json.year = "2013";
+        new_json.SaveRating = "0";
+        new_json.made = "0";
+        new_json.blown = "0";
+        new_json.attempts = "0";
+		filteredData.push(new_json);
+    }
+	filteredData.sort(function(a, b) {
+		return parseInt(a.year) - parseInt(b.year);
+	});
+	
+	xAxisScale.domain([d3.min(filteredData.map(function(d) { return d.year; })), (parseInt(d3.max(filteredData.map(function(d) { return d.year; })))+1).toString()])
     x.domain(filteredData.map(function(d) {
         return d.year;
     }));
@@ -94,7 +139,6 @@ d3.csv("pitchers.csv", function(error, data) {
             d3.select("#degrree")
                 .text(d.SaveRating);
         });
-	console.log('1');
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis);
@@ -107,7 +151,7 @@ d3.csv("pitchers.csv", function(error, data) {
 
     svg.append("g")
         .attr("class", "X axis")
-        .attr("transform", "translate(" + (margin.left - 6.5) + "," + height + ")")
+        .attr("transform", "translate(" + (margin.left+90) + "," + height + ")")
         .call(xAxis);
 
     svg.append("g")
@@ -129,6 +173,5 @@ d3.csv("pitchers.csv", function(error, data) {
         .append("text")
         .attr("id","degrree");
 
-	console.log('2');
 });
 console.log('2');
