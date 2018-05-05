@@ -22,6 +22,10 @@
     margin-bottom: 45px;
     color: white;
   }
+  .title {
+    color:white;
+    size: 5;
+  }
   .bg-1 { 
       background-color: darkred; /* Green */
       color: #ffffff;
@@ -35,7 +39,7 @@
       color: white;
   }
   .bg-4 { 
-      background-color: white; /* Black Gray */
+      background-color: darkgray; /* Black Gray */
       color: #fff;
   }
   .container-fluid {
@@ -52,7 +56,7 @@
       letter-spacing: 5px;
   }
   .navbar-nav  li a:hover {
-      color: #1abc9c !important;
+      color: blue !important;
   }
   .i-am-centered { 
     margin: 0 auto; max-width: 1000px;
@@ -127,39 +131,44 @@ input[type=submit] {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="#">Me</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">WHO</a></li>
-        <li><a href="#">WHAT</a></li>
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="#try">TRYIT</a></li>
+        <li><a href="#how">HOW</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
 <!-- First Container -->
-<div class="container-fluid bg-1">
+<div id="about" class="container-fluid bg-1">
   <div class="text-center">
-  <h3 class="margin">About Save 2.0</h3>
-  <img src="MLB.png" style="display:inline" alt="MLB" width="350" height="200">
-  <h1><font size = "4.5" color="white">A pitcher is credited with a save if he enters the game with his team leading and meets all four of the following conditions:</font></h1>
+    <h3 class="margin">About Save 2.0</h3>
+    <img src="MLB.png" style="display:inline" alt="MLB" width="350" height="200">
+    <h1><font size = "4.5" color="white">A pitcher is credited with a save if he enters the game with his team leading and meets all four of the following conditions:</font></h1>
   </div>
-  <ol>
-  <li>He is the finishing pitcher in a game won by his team</li>
-  <li>He is not the winning pitcher</li>
-  <li>He is credited with at least ⅓ of an inning pitched; and</li>
-  <li>He satisfies one of the following conditions:</li>
-  <ol>
-      <li>He enters the game with a lead of no more than three runs and pitches for at least one inning</li>
-      <li>He enters the game, regardless of the count, with the potential tying run either on base, at bat or on deck</li>
-      <li>He pitches for at least three innings</li>
-    </ol>
-</ol>
-</div>
+  <h4>
+  <ol type="A" style="padding-left:200px;">
+    <li>He is the finishing pitcher in a game won by his team</li>
+    <li>He is not the winning pitcher</li>
+    <li>He is credited with at least ⅓ of an inning pitched; and</li>
+    <li>He satisfies one of the following conditions:</li>
+      <ol>
+        <li>He enters the game with a lead of no more than three runs and pitches for at least one inning</li>
+        <li>He enters the game, regardless of the count, with the potential tying run either on base, at bat or on deck</li>
+        <li>He pitches for at least three innings</li>
+      </ol>
+  </ol>
+  </h4>
+  
+    <p style="padding-left: 120px;"><font size="4" color="white">Under this definition of a save, all saves are created equal. For example, a pitcher who enters a game with a 3 run lead in the ninth inning gets the same stat boost as a pitcer who has to close out a game in the 7th inning, while only up by one run. Clearly, it is much harder to accomplish the ladder. Because of this, we wanted to create a statistic that rewards pithcers more for making more difficult saves.</font></p>
+
+  </div>
 
 <!-- Second Container -->
-<div class="container-fluid bg-2 text-center">
+<div id="try" class="container-fluid bg-2 text-center">
   <h3 style="color:black;">Try it out and search for a relief pitcher!</h3>
   <!--<a href="#" class="btn btn-default btn-lg">
     <span class="glyphicon glyphicon-search"></span> Search
@@ -176,7 +185,6 @@ input[type=submit] {
                 <label for="search" class="sr-only">Search For A Player...</label>
                   <!--<input type="text" style = "position: relative; left:100px" class="form-control" id="userInput" placeholder="Search For A Player...">
                   <input class="btn btn-primary" type="submit" style = "position: absolute; left:460px; top: -5px; color:black;" onclick=",othername(); redirect();" > -->
-
                   <!-- WORKING with Submit -->
                     <div class="autocomplete" style="width:300px; color:black;">
                       <input type="text" id="userInput" style = "position: relative; left:60px" placeholder="Search For A Player...">
@@ -184,7 +192,6 @@ input[type=submit] {
                       <input class="btn btn-primary" type="submit" onclick="othername(); redirect();" style = "position: absolute; left:390px; top: 2px; color:black;">-->
                       <div class="container">
                         </div>
-
                   </div>
             </form>
             
@@ -308,18 +315,10 @@ input[type=submit] {
 
 
 <!-- Third Container (Grid) -->
-    <div class="container-fluid bg-3 text-center">    
-    <h3 class="margin">About Save 2.0's Creators</h3><br>
+    <div id="how" class="container-fluid bg-3 text-center">    
+    <h3 class="margin">How We Calculate Save 2.0</h3><br>
     <div class="i-am-centered">
     <div class="row">
-      <div class="col-sm-4">
-        <p>Spencer Negri</p>
-        <img src="birds1.jpg" class="img-responsive margin" style="width:100%" alt="Image">
-      </div>
-      <div class="col-sm-4"> 
-        <p>Dylan Schneider</p>
-        <img src="birds2.jpg" class="img-responsive margin" style="width:100%" alt="Image">
-      </div>
     </div>
     </div>
   </div>
