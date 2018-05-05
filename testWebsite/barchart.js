@@ -15,17 +15,20 @@ var x = d3.scale.ordinal()
 
 
 var xAxisScale = d3.scale.linear()
-    //.domain([2010, 2014])
     .range([0, width]);
 
 var xAxis = d3.svg.axis()
-    .scale(xAxisScale)
+	//.scale(xAxisScale)
     .orient("bottom")
     .tickFormat(d3.format("d"));
 
+//var yAxisScale = d3.scale.linear()
+//	.range(
+
 var yAxis = d3.svg.axis()
-    .scale(y)
+    //.scale(y)
     .orient("left");
+
 
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -35,13 +38,13 @@ var svg = d3.select("#chart").append("svg")
 
 d3.csv("pitchers.csv", function(error, data) {
 	var filteredData = data.filter(function(d) {
-		if (d.Pitcher_ID == 'Vinnie Pestano'){
+		var name = localStorage.getItem('PlayerName');	
+		if (d.Pitcher_ID == name){
 			return d;
 		}
 	});
 	
 	let yearArr = filteredData.map(function(d) { return d.year; });
-	console.log(yearArr);
 	if (yearArr.indexOf("2010") < 0){
 		var new_json = {};
 		new_json.Pitcher_ID = filteredData[0].Pitcher_ID;
@@ -90,11 +93,14 @@ d3.csv("pitchers.csv", function(error, data) {
     x.domain(filteredData.map(function(d) {
         return d.year;
     }));
+	
+	xAxis.scale(xAxisScale);
+	
     y.domain(d3.extent(filteredData, function(d) {
-        return d.SaveRating;
-    })).nice();
-
-	console.log(filteredData);
+        return parseInt(d.SaveRating);
+    }));
+	yAxis.scale(y);
+		
     svg.selectAll(".bar")
         .data(filteredData)
         .enter().append("rect")
@@ -174,4 +180,3 @@ d3.csv("pitchers.csv", function(error, data) {
         .attr("id","degrree");
 
 });
-console.log('2');
