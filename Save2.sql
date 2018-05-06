@@ -15,19 +15,11 @@ inner join (
 ) sp on sp.GAME_ID = s.GAME_ID and sp.EVENT_ID = s.EVENT_ID
 order by s.GAME_ID, s.BAT_HOME_ID;
 
-# get initial state for each last pitcher for each game, including the saver (if applicable)
-select e.*, g.save_pit_id from events e
-inner join (
-	select GAME_ID, BAT_HOME_ID, max(EVENT_ID) EVENT_ID from subs
-	where sub_fld_cd = 1 and removed_fld_cd = 1
-    group by GAME_ID, BAT_HOME_ID
-) s on s.game_id = e.game_id and s.event_id+1 = e.event_id
-left join games g on g.GAME_ID = e.GAME_ID; 
-
+# show all substituted pitchers
 select s.* from subs s where sub_fld_cd = 1 and removed_fld_cd = 1 order by s.GAME_ID, s.BAT_HOME_ID;
 
 # put it all together
-select e.GAME_ID, e.EVENT_ID, e.INN_CT, g.INN_CT as TOTAL_INN, IF(e.BAT_HOME_ID = 0, 1, 0) as HOME_TEAM, e.OUTS_CT, e.HOME_SCORE_CT, e.AWAY_SCORE_CT, IF(BASE1_RUN_ID = '', 0, 1) AS RUNNER_FIRST, IF(BASE2_RUN_ID = '', 0, 1) AS RUNNER_SECOND, IF(BASE3_RUN_ID = '', 0, 1) AS RUNNER_THIRD, e.PIT_ID, IF(SAVE_PIT_ID = '', 'None', SAVE_PIT_ID) AS SAVE_PIT_ID, concat(r.first_name_tx, ' ', r.last_name_tx) as 'FULL_NAME' 
+select e.GAME_ID, e.EVENT_ID, e.INN_CT, g.INN_CT as TOTAL_INN, IF(e.BAT_HOME_ID = 0, 1, 0) as HOME_TEAM, IF(g.HOME_SCORE_CT > g.AWAY_SCORE_CT, 1, 0) as HOME_TEAM_WINS, e.OUTS_CT, e.HOME_SCORE_CT, e.AWAY_SCORE_CT, IF(BASE1_RUN_ID = '', 0, 1) AS RUNNER_FIRST, IF(BASE2_RUN_ID = '', 0, 1) AS RUNNER_SECOND, IF(BASE3_RUN_ID = '', 0, 1) AS RUNNER_THIRD, e.PIT_ID, IF(SAVE_PIT_ID = '', 'None', SAVE_PIT_ID) AS SAVE_PIT_ID, concat(r.first_name_tx, ' ', r.last_name_tx) as 'FULL_NAME' 
 from events e
 inner join (
 	select s.GAME_ID, s.BAT_HOME_ID, s.EVENT_ID from subs s where sub_fld_cd = 1 and removed_fld_cd = 1 order by s.GAME_ID, s.BAT_HOME_ID

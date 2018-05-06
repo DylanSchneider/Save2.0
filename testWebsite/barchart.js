@@ -1,14 +1,14 @@
 var margin = {
-        top: 10,
+		top: 30,
         right: 10,
         bottom: 20,
         left: 30
     },
     width = 920 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 600 - margin.top - margin.bottom;
 
 var y = d3.scale.linear()
-    .range([height-75, 0]);
+    .range([height-30, 0]);
 
 var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], 0.6, 0.3);
@@ -43,7 +43,7 @@ d3.csv("pitchers.csv", function(error, data) {
 			return d;
 		}
 	});
-	
+	console.log(filteredData);	
 	let yearArr = filteredData.map(function(d) { return d.year; });
 	if (yearArr.indexOf("2010") < 0){
 		var new_json = {};
@@ -97,10 +97,11 @@ d3.csv("pitchers.csv", function(error, data) {
 	xAxis.scale(xAxisScale);
 	
     y.domain(d3.extent(filteredData, function(d) {
-        return parseInt(d.SaveRating);
+        return d.SaveRating;
     }));
 	yAxis.scale(y);
-		
+	console.log("H", y(height));
+	console.log("0", y(0));
     svg.selectAll(".bar")
         .data(filteredData)
         .enter().append("rect")
@@ -142,7 +143,7 @@ d3.csv("pitchers.csv", function(error, data) {
             // alert("Year: " + d.Year + ": " + d.Celsius + " Celsius");
             d3.select("#_yr")
                 .text("Year: " + d.year);
-            d3.select("#degrree")
+            d3.select("#_sr")
                 .text(d.SaveRating);
         });
     svg.append("g")
@@ -169,14 +170,14 @@ d3.csv("pitchers.csv", function(error, data) {
 
     svg.append("g")
         .attr("class", "infowin")
-        .attr("transform", "translate(50, 5)")
+        .attr("transform", "translate(50, -5)")
         .append("text")
         .attr("id", "_yr");
 
     svg.append("g")
         .attr("class", "infowin")
-        .attr("transform", "translate(110, 5)")
+        .attr("transform", "translate(110, -5)")
         .append("text")
-        .attr("id","degrree");
+        .attr("id","_sr");
 
 });
