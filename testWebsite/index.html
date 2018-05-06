@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
   <!-- Theme Made By www.w3schools.com - No Copyright -->
-  <title>Bootstrap Theme Simply Me</title>
+  <title>Save 2.0</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML" async></script>
   <style>
   body {
       font: 20px Montserrat, sans-serif;
@@ -117,7 +116,6 @@ input[type=submit] {
   color: #ffffff; 
 }
 
-
   </style>
 </head>
 <body>
@@ -144,32 +142,36 @@ input[type=submit] {
 
 <!-- First Container -->
 <div id="about" class="container-fluid bg-1">
-  <div class="text-center">
-    <h3 class="margin">About Save 2.0</h3>
-    <img src="MLB.png" style="display:inline" alt="MLB" width="350" height="200">
-    <h1><font size = "4.5" color="white">A pitcher is credited with a save if he enters the game with his team leading and meets all four of the following conditions:</font></h1>
+  <div class="text-center"> 
+    <h2 class="margin">About Save 2.0</h2>
+    <img src="./MLB.png" style="display:inline" alt="MLB" width="350" height="200">
+    <h3>A pitcher is credited with a save if he enters the game with his team leading and meets all four of the following conditions:</h3>
   </div>
-  <h4>
-  <ol type="A" style="padding-left:200px;">
-    <li>He is the finishing pitcher in a game won by his team</li>
-    <li>He is not the winning pitcher</li>
-    <li>He is credited with at least ⅓ of an inning pitched; and</li>
-    <li>He satisfies one of the following conditions:</li>
-      <ol>
-        <li>He enters the game with a lead of no more than three runs and pitches for at least one inning</li>
-        <li>He enters the game, regardless of the count, with the potential tying run either on base, at bat or on deck</li>
-        <li>He pitches for at least three innings</li>
+ <h4>	
+ 	   <ol type="A">
+   	     <li>He is the finishing pitcher in a game won by his team</li>
+         <li>He is not the winning pitcher</li>
+         <li>He is credited with at least ⅓ of an inning pitched; and</li>
+         <li>He satisfies one of the following conditions:</li>
+	     <ol>
+           <li>He enters the game with a lead of no more than three runs and pitches for at least one inning</li>
+           <li>He enters the game, regardless of the count, with the potential tying run either on base, at bat or on deck</li>
+           <li>He pitches for at least three innings</li>
+         </ol>
       </ol>
-  </ol>
   </h4>
-  
-    <p style="padding-left: 120px;"><font size="4" color="white">Under this definition of a save, all saves are created equal. For example, a pitcher who enters a game with a 3 run lead in the ninth inning gets the same stat boost as a pitcer who has to close out a game in the 7th inning, while only up by one run. Clearly, it is much harder to accomplish the ladder. Because of this, we wanted to create a statistic that rewards pithcers more for making more difficult saves.</font></p>
+  <div class="text-center">
+    <h3>A pitcher is credited with a blown save if he enters the game in a save situation (above) and gives up the tying run.</h3>
+
+    <h5>Under this definition of a save, all saves are created equal. For example, a pitcher who enters a game with a 3 run lead in the 9th inning gets the same stat boost as a pitcer who has to close out a game in the 7th inning. Clearly, it is much harder to accomplish the ladder due to the more outs the pitcher must get, with a smaller lead. Because of this, we wanted to create a statistic that rewards pitchers more for making more difficult saves. Alongside rewarding pitchers for their save, we also wanted to penalize pitchers for a loss, so pitchers get negative points for incurring a blown save, and it is also weighted by the difficulty of the situation in which they entered the game. So over a season (or career) a pitcher will accumalate points when they come into a game in a save situation. </h5>
 
   </div>
+
+</div>
 
 <!-- Second Container -->
 <div id="try" class="container-fluid bg-2 text-center">
-  <h3 style="color:black;">Try it out and search for a relief pitcher!</h3>
+  <h2 style="color:black;">Try it out and search for a relief pitcher!</h2>
   <!--<a href="#" class="btn btn-default btn-lg">
     <span class="glyphicon glyphicon-search"></span> Search
   </a> -->
@@ -206,7 +208,7 @@ input[type=submit] {
                 localStorage.setItem("PlayerName", input);
               }
               function redirect() {
-                location.href = "barchart.html";
+                location.href = "./barchart.html";
               }
               
               function autocomplete(inp, arr) {
@@ -316,12 +318,12 @@ input[type=submit] {
 
 <!-- Third Container (Grid) -->
     <div id="how" class="container-fluid bg-3 text-center">    
-    <h3 class="margin">How We Calculate Save 2.0</h3><br>
-    <div class="i-am-centered">
-    <div class="row">
-    </div>
-    </div>
-  </div>
+    <h2 class="margin">How We Calculated Save 2.0</h2>
+   	<h4> In order to create this statistic, we needed some way to rate the difficulty of a save for a pitcher. Since the original save stat only counts completed saves, we wanted a way to weight these saves and have a way to penalize pitchers for blowing saves. In order to see how difficult a save actually was, we looked at the save situations pitchers were coming into and calculated how often similar saves had been completed. We grouped the save situations by inning, number of outs, and runners on base. We believe that these 3 things are what determine how hard a save is for a pitcher. After analyzing the situation data, we indeed saw a correlation between inning, number of outs, runners on base and the percentage that the particular save was made/blown. This means pitchers will be rewarded more when they have to pitch for multiple innings with slim leads, but also will be heavily penalized if they blow a save in the 9th with a significant lead. In order to calculate our actual statistic for each save, we just use the percentage that the save was made, and normalize it.  </h4> 
+	<h3> $$saveRating = \frac{1}{save\%} \text{for made save} $$ <h3>
+			<h3> $$saveRating = -\frac{0.25}{save\%} \text{for blown save} $$<h3>
+	<h4> The 1 and 0.25 are just our normalizing constant to make our stat look better <h4>
+	
 
 
 </body>
